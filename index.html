@@ -6,94 +6,122 @@
     <title>PigeeBack - Smart Courier Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
-        body {
+        html, body {
             font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Prevent global scrollbars */
+            height: 100%;
         }
         /* PigeeBack Color Palette */
         :root {
-            --pigee-green: #98CE00; /* Vibrant Lime Green */
-            --pigee-blue: #1A237E;  /* Deep Dark Blue */
-            --pigee-grey: #808080;  /* Medium Grey */
-            --pigee-light-grey: #F3F4F6; /* Light Grey for backgrounds/accents */
-            --text-dark: #1F2937;    /* Dark text for light backgrounds */
-            --text-light: #FFFFFF;   /* Light text for dark backgrounds */
+            --pigee-green: #98CE00;
+            --pigee-blue: #1A237E;
+            --pigee-grey: #808080;
+            --pigee-light-grey: #F3F4F6;
+            --text-dark: #1F2937;
+            --text-light: #FFFFFF;
         }
 
-        /* Custom styles to use the color palette */
         .bg-pigee-blue { background-color: var(--pigee-blue); }
         .text-pigee-blue { color: var(--pigee-blue); }
         .hover\:text-pigee-blue:hover { color: var(--pigee-blue); }
-
         .bg-pigee-green { background-color: var(--pigee-green); }
         .text-pigee-green { color: var(--pigee-green); }
-        .hover\:bg-pigee-green-dark:hover { background-color: #86b300; /* Darker green */ }
-        
+        .hover\:bg-pigee-green-dark:hover { background-color: #86b300; }
         .border-pigee-green { border-color: var(--pigee-green); }
         .focus\:ring-pigee-green:focus { --tw-ring-color: var(--pigee-green); }
         .focus\:border-pigee-green:focus { border-color: var(--pigee-green); }
-
         .bg-pigee-grey { background-color: var(--pigee-grey); }
         .text-pigee-grey { color: var(--pigee-grey); }
-
         .bg-pigee-light-grey { background-color: var(--pigee-light-grey); }
-
         .text-dark { color: var(--text-dark); }
         .text-light { color: var(--text-light); }
-
         .logo-text .pigee { color: var(--pigee-blue); }
         .logo-text .back { color: var(--pigee-green); }
         
-        .cta-button {
-            @apply font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105;
-        }
-        .cta-button-green {
-            background-color: var(--pigee-green);
-            color: var(--text-dark); /* Or white if better contrast */
-        }
-        .cta-button-green:hover {
-            background-color: #86b300; /* Darker green */
-        }
-        .cta-button-blue {
-            background-color: var(--pigee-blue);
-            color: var(--text-light);
-        }
-        .cta-button-blue:hover {
-            background-color: #131a5c; /* Darker blue */
-        }
-        .cta-button-outline-light {
-            @apply border-2 border-white text-white hover:bg-white hover:text-pigee-grey;
-        }
-        .section-title {
-            @apply text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12;
-        }
-        .page-section-title { /* For titles of sections acting as pages */
-             @apply text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 text-pigee-blue;
-        }
-        .card {
-            @apply bg-white p-6 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300;
-        }
-        .page-content { /* Class to hide/show page sections */
-            display: none; /* Hidden by default */
-        }
-        .page-content.active {
-            display: block; /* Shown when active */
-        }
-        /* Ensure main content area has some padding */
-        main > .page-content {
-            @apply py-16 md:py-20; 
-        }
-        main > .page-content:first-child { /* Home content might not need top padding if hero is separate */
-            /* @apply pt-0 md:pt-0; */
+        .cta-button { @apply font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105; }
+        .cta-button-green { background-color: var(--pigee-green); color: var(--text-dark); }
+        .cta-button-green:hover { background-color: #86b300; }
+        .cta-button-blue { background-color: var(--pigee-blue); color: var(--text-light); }
+        .cta-button-blue:hover { background-color: #131a5c; }
+        .cta-button-outline-light { @apply border-2 border-white text-white hover:bg-white hover:text-pigee-grey; }
+        
+        .page-main-title { @apply text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-10; }
+        .card { @apply bg-white p-6 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300; }
+
+        #page-container {
+            display: flex;
+            width: 100%; /* JS will set this */
+            height: calc(100vh - 5rem); /* Header height */
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
         }
 
+        .page-slide {
+            width: 100vw;
+            height: 100%;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem; /* Reduced padding for more content space */
+            box-sizing: border-box;
+            position: relative;
+            overflow-y: auto; /* Allow internal scroll for content that doesn't use carousels */
+        }
+        
+        /* Slide specific backgrounds */
+        #home { background-color: var(--pigee-light-grey); color: var(--text-dark); }
+        #about { background-color: var(--text-light); color: var(--text-dark); }
+        #how-it-works { background-color: var(--pigee-light-grey); color: var(--text-dark); }
+        #services { background-color: var(--text-light); color: var(--text-dark); }
+        #cta { background-color: var(--pigee-blue); color: var(--text-light); }
+        #legal { background-color: var(--pigee-light-grey); color: var(--text-dark); } /* New */
+        #resources { background-color: var(--text-light); color: var(--text-dark); } /* New */
+        #contact { background-color: var(--pigee-light-grey); color: var(--text-dark); }
+        #signup { background-color: var(--text-light); color: var(--text-dark); }
+        #dashboard { background-color: var(--pigee-light-grey); color: var(--text-dark); }
+        #terms { background-color: var(--text-light); color: var(--text-dark); }
+
+        #dot-navigation { position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.75rem; z-index: 100; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background-color: var(--pigee-grey); opacity: 0.6; cursor: pointer; transition: all 0.3s ease; }
+        .dot.active, .dot:hover { background-color: var(--pigee-blue); opacity: 1; transform: scale(1.2); }
+
+        header { height: 5rem; /* 80px */ }
+
+        /* Swiper Carousel Styles */
+        .swiper-container { width: 100%; max-width: 900px; /* Max width for carousels */ padding-bottom: 40px; /* Space for pagination */ }
+        .swiper-slide { text-align: center; background: #fff; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: space-between; min-height: 280px; cursor: pointer; }
+        .swiper-slide h4 { font-size: 1.1rem; font-weight: 600; color: var(--pigee-blue); margin-bottom: 0.5rem; }
+        .swiper-slide p.summary { font-size: 0.875rem; color: var(--text-dark); margin-bottom: 1rem; flex-grow: 1; }
+        .swiper-slide .details { display: none; margin-top: 1rem; text-align: left; font-size: 0.85rem; max-height: 150px; overflow-y: auto; padding-right: 10px;}
+        .swiper-slide .details.expanded { display: block; }
+        .swiper-slide .details::-webkit-scrollbar { width: 5px; }
+        .swiper-slide .details::-webkit-scrollbar-thumb { background: var(--pigee-grey); border-radius: 10px; }
+        .swiper-slide .external-link { display: inline-block; margin-top: 0.75rem; font-size: 0.8rem; color: var(--pigee-green); text-decoration: underline; }
+        .swiper-pagination-bullet-active { background: var(--pigee-blue) !important; }
+        .swiper-button-next, .swiper-button-prev { color: var(--pigee-blue) !important; }
+
+        /* Specific for legal/terms content area to ensure it's scrollable if long */
+        .content-box { max-height: calc(100% - 6rem); /* Adjust based on title height */ overflow-y: auto; padding: 1rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width:100%; max-width: 900px; }
+        .content-box h3 { color: var(--pigee-blue); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 1.25rem; font-weight: 600; }
+        .content-box p, .content-box li { margin-bottom: 0.75rem; line-height: 1.6; }
+        .content-box ul { list-style-type: disc; padding-left: 1.5rem; }
+
     </style>
-    <link rel="stylesheet" href="css/tailwind.css"> </head>
-<body class="bg-pigee-light-grey text-dark">
+</head>
+<body class="text-dark">
 
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-full">
                 <div class="flex items-center">
                     <a href="#home" data-target="home" class="nav-link flex items-center space-x-2">
                         <img src="img/logo.svg" alt="PigeeBack Logo" class="h-10 w-auto">
@@ -101,280 +129,221 @@
                     </a>
                 </div>
                 <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" data-target="home" class="nav-link text-pigee-blue hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Home</a>
-                        <a href="#about" data-target="about" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">About</a>
-                        <a href="#how-it-works" data-target="how-it-works" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">How It Works</a>
-                        <a href="#services" data-target="services" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Services</a>
-                        <a href="#contact" data-target="contact" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Contact</a>
-                        <a href="#signup" data-target="signup" class="nav-link ml-4 cta-button cta-button-green px-4 py-2 text-sm">Sign Up</a>
-                        <a href="#dashboard" data-target="dashboard" class="nav-link ml-2 cta-button cta-button-blue px-4 py-2 text-sm" id="loginNavButton">Login</a>
-                        <span id="userNameDisplay" class="nav-link text-gray-700 px-3 py-2 rounded-md text-base font-medium hidden"></span>
-                        <button id="logoutButton" class="nav-link ml-2 cta-button bg-pigee-grey text-white px-4 py-2 text-sm hidden">Logout</button>
+                    <div class="ml-10 flex items-baseline space-x-2"> {/* Reduced space for more items */}
+                        <a href="#home" data-target="home" class="nav-link text-pigee-blue hover:text-pigee-green px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#about" data-target="about" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="#how-it-works" data-target="how-it-works" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-sm font-medium">How It Works</a>
+                        <a href="#legal" data-target="legal" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-sm font-medium">Legal</a>
+                        <a href="#resources" data-target="resources" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-sm font-medium">Resources</a>
+                        <a href="#contact" data-target="contact" class="nav-link text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                        <a href="#signup" data-target="signup" class="nav-link ml-3 cta-button cta-button-green px-3 py-1.5 text-xs">Sign Up</a>
+                        <a href="#dashboard" data-target="dashboard" class="nav-link ml-1 cta-button cta-button-blue px-3 py-1.5 text-xs" id="loginNavButton">Login</a>
+                        <span id="userNameDisplay" class="nav-link text-gray-700 px-3 py-2 rounded-md text-sm font-medium hidden"></span>
+                        <button id="logoutButton" class="nav-link ml-1 cta-button bg-pigee-grey text-white px-3 py-1.5 text-xs hidden">Logout</button>
                     </div>
                 </div>
                 <div class="md:hidden">
-                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-pigee-green hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pigee-green" aria-controls="mobile-menu" aria-expanded="false">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-pigee-green focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pigee-green" aria-controls="mobile-menu" aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
             </div>
         </nav>
         <div class="md:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
                 <a href="#home" data-target="home" class="nav-link block text-pigee-blue hover:bg-pigee-light-grey px-3 py-2 rounded-md text-base font-medium">Home</a>
                 <a href="#about" data-target="about" class="nav-link block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">About</a>
                 <a href="#how-it-works" data-target="how-it-works" class="nav-link block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">How It Works</a>
-                <a href="#services" data-target="services" class="nav-link block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Services</a>
+                <a href="#legal" data-target="legal" class="nav-link block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Legal & Compliance</a>
+                <a href="#resources" data-target="resources" class="nav-link block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Resources</a>
                 <a href="#contact" data-target="contact" class="nav-link block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Contact</a>
                 <a href="#signup" data-target="signup" class="nav-link block w-full text-center cta-button cta-button-green mt-2 py-2">Sign Up</a>
                 <a href="#dashboard" data-target="dashboard" class="nav-link block w-full text-center cta-button cta-button-blue mt-2 py-2" id="mobileLoginNavButton">Login</a>
-                <span id="mobileUserNameDisplay" class="nav-link block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium hidden"></span>
+                <span id="mobileUserNameDisplay" class="nav-link block text-gray-700 px-3 py-2 rounded-md text-base font-medium hidden"></span>
                 <button id="mobileLogoutButton" class="nav-link block w-full text-left cta-button bg-pigee-grey text-white mt-2 py-2 px-3 hidden">Logout</button>
             </div>
         </div>
     </header>
 
-    <main>
-        <div id="home" class="page-content active">
-            <section id="home-hero" class="bg-pigee-light-grey py-20 md:py-32">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-dark leading-tight">
-                        Welcome to <span class="logo-text"><span class="pigee">Pigee</span><span class="back">Back</span></span>
-                    </h1>
-                    <p class="mt-6 text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto">
-                        The smart, cost-effective, and eco-friendly way to send and deliver packages. Leverage existing journeys, save money, and optimize resources.
-                    </p>
-                    <div class="mt-10">
-                         <a href="#signup" data-target="signup" class="nav-link cta-button cta-button-green text-lg px-8 py-3">Get Started</a>
-                    </div>
-                </div>
-            </section>
+    <main id="page-container">
+        <section id="home" class="page-slide">
+            <div class="text-center max-w-3xl">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+                    Welcome to <span class="logo-text"><span class="pigee">Pigee</span><span class="back">Back</span></span>
+                </h1>
+                <p class="mt-6 text-lg sm:text-xl text-gray-700">The smart, cost-effective, and eco-friendly way to send and deliver packages.</p>
+                <div class="mt-10"><a href="#signup" data-target="signup" class="nav-link cta-button cta-button-green text-lg px-8 py-3">Get Started</a></div>
+            </div>
+        </section>
 
-            <section id="home-about" class="py-16 md:py-24 bg-white"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="section-title text-pigee-blue">What is <span class="logo-text"><span class="pigee">Pigee</span><span class="back">Back</span></span>?</h2>
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <img src="https://placehold.co/600x400/98CE00/1A237E?text=PigeeBack+Concept" alt="PigeeBack Concept Illustration" class="rounded-lg shadow-xl w-full">
-                        </div>
-                        <div class="text-lg text-gray-700 space-y-4">
-                            <p>PigeeBack is an innovative platform connecting people who need to send packages with those already travelling along the same routes. Whether you're an individual looking to make extra cash on your commute or a courier company aiming to fill empty space, PigeeBack is your solution.</p>
-                            <p>Our vision is to transform the courier industry by making it more efficient, affordable, and sustainable. We put the power back in your hands, offering a win-win for both clients and service providers.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <section id="about" class="page-slide">
+            <div class="max-w-5xl w-full grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1"><h2 class="page-main-title text-left !text-pigee-blue">What is <span class="logo-text"><span class="pigee">Pigee</span><span class="back">Back</span></span>?</h2><div class="text-lg text-gray-700 space-y-4"><p>PigeeBack connects people needing to send packages with those already travelling the same routes. It's a win-win for clients (lower costs) and service providers (optimized trips).</p><p>Our vision: a more efficient, affordable, and sustainable courier industry.</p></div></div>
+                <div class="order-1 md:order-2"><img src="https://placehold.co/600x450/98CE00/1A237E?text=Connect+%26+Save" alt="PigeeBack Concept" class="rounded-lg shadow-xl w-full max-w-md mx-auto"></div>
+            </div>
+        </section>
 
-            <section id="home-how-it-works" class="py-16 md:py-24 bg-pigee-light-grey"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="section-title text-pigee-blue">How PigeeBack Works</h2>
-                    <div class="grid md:grid-cols-2 gap-10">
-                        <div class="card">
-                            <h3 class="text-2xl font-semibold text-pigee-blue mb-4">For Clients (Sending a Package)</h3>
-                            <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                                <li><strong>Sign Up & Search:</strong> Register and find providers on your route.</li>
-                                <li><strong>Request Quotes:</strong> Get the best price from multiple providers.</li>
-                                <li><strong>Choose & Arrange:</strong> Select and coordinate directly.</li>
-                                <li><strong>Track Your Package:</strong> Stay updated (provider dependent).</li>
-                                <li><strong>Save Money & Time:</strong> Enjoy cheaper, flexible delivery.</li>
-                            </ol>
-                        </div>
-                        <div class="card">
-                            <h3 class="text-2xl font-semibold text-pigee-green mb-4">For Service Providers (Delivering)</h3>
-                            <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                                <li><strong>Register & List Routes:</strong> Sign up and share your travel plans.</li>
-                                <li><strong>Receive Requests:</strong> Get notified by clients on your routes.</li>
-                                <li><strong>Provide Quotes:</strong> Offer competitive pricing.</li>
-                                <li><strong>Maximize Earnings:</strong> Turn empty space into profit.</li>
-                                <li><strong>Build Reputation:</strong> Gain reviews and attract more clients.</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <section id="how-it-works" class="page-slide">
+            <div class="max-w-5xl w-full"><h2 class="page-main-title">How PigeeBack Works</h2><div class="grid md:grid-cols-2 gap-10"><div class="card"><h3 class="text-2xl font-semibold text-pigee-blue mb-4">For Clients</h3><ol class="list-decimal list-inside space-y-3 text-gray-700 text-sm"><li><strong>Sign Up & Search:</strong> Register and find providers.</li><li><strong>Request Quotes:</strong> Get the best price.</li><li><strong>Choose & Arrange:</strong> Select and coordinate.</li><li><strong>Track Your Package:</strong> Stay updated.</li><li><strong>Save Money & Time.</strong></li></ol></div><div class="card"><h3 class="text-2xl font-semibold text-pigee-green mb-4">For Service Providers</h3><ol class="list-decimal list-inside space-y-3 text-gray-700 text-sm"><li><strong>Register & List Routes.</strong></li><li><strong>Receive Requests.</strong></li><li><strong>Provide Quotes.</strong></li><li><strong>Maximize Earnings.</strong></li><li><strong>Build Reputation.</strong></li></ol></div></div></div>
+        </section>
 
-            <section id="home-services" class="py-16 md:py-24 bg-white"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="section-title text-pigee-blue">Our Service Tiers</h2>
-                    <p class="text-center text-lg text-gray-700 mb-12 max-w-3xl mx-auto">PigeeBack offers different tiers to cater to a wide range of service providers, ensuring flexibility and trust.</p>
-                    <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="card text-center"><div class="text-6xl mb-4 text-pigee-green">🧍</div><h3 class="text-xl font-semibold text-dark mb-2">Informal</h3><p class="text-gray-700">Casual individuals. No formal company registration needed.</p></div>
-                        <div class="card text-center"><div class="text-6xl mb-4 text-pigee-blue">🚚</div><h3 class="text-xl font-semibold text-dark mb-2">Semi-Formal</h3><p class="text-gray-700">Small businesses or registered individuals. Enhanced credibility.</p></div>
-                        <div class="card text-center"><div class="text-6xl mb-4 text-pigee-grey">🌍</div><h3 class="text-xl font-semibold text-dark mb-2">Formal</h3><p class="text-gray-700">Established couriers. Requires registration and accreditations.</p></div>
-                    </div>
+        <section id="services" class="page-slide">
+            <div class="max-w-5xl w-full"><h2 class="page-main-title">Our Service Tiers</h2><p class="text-center text-lg text-gray-700 mb-10 max-w-2xl mx-auto">Flexibility and trust for every need.</p><div class="grid sm:grid-cols-1 md:grid-cols-3 gap-6"><div class="card text-center"><div class="text-5xl mb-3 text-pigee-green">🧍</div><h3 class="text-lg font-semibold text-dark mb-1">Informal</h3><p class="text-xs text-gray-600">Casual individuals. No company registration needed.</p></div><div class="card text-center"><div class="text-5xl mb-3 text-pigee-blue">🚚</div><h3 class="text-lg font-semibold text-dark mb-1">Semi-Formal</h3><p class="text-xs text-gray-600">Small businesses or registered individuals.</p></div><div class="card text-center"><div class="text-5xl mb-3 text-pigee-grey">🌍</div><h3 class="text-lg font-semibold text-dark mb-1">Formal</h3><p class="text-xs text-gray-600">Established couriers. Accreditations required.</p></div></div></div>
+        </section>
+        
+        <section id="legal" class="page-slide">
+            <div class="w-full max-w-4xl">
+                <h1 class="page-main-title !mb-6">Legal & Compliance</h1>
+                <div class="content-box text-sm">
+                    <h3>Key Transport Legislation (South Africa)</h3>
+                    <p>Formal transport businesses in South Africa must adhere to various legal frameworks. This is a general overview and not exhaustive legal advice.</p>
+                    <ul>
+                        <li><strong>National Land Transport Act (NLTA), No. 5 of 2009:</strong> This is the primary legislation governing land transport. It aims to consolidate land transport functions, prescribes policy, and regulates public transport, freight transport, and traffic management. Key aspects include requirements for operating licenses for transport services.</li>
+                        <li><strong>Road Traffic Act, No. 93 of 1996:</strong> Governs all aspects of road traffic, including vehicle roadworthiness, driver licensing, rules of the road, and vehicle registration. Essential for all vehicle operators.</li>
+                        <li><strong>Operator Licensing:</strong> Depending on the nature and scale of transport services (especially for freight and public transport), operators need specific licenses issued by relevant transport authorities (e.g., Provincial Regulatory Entities - PREs). This ensures vehicles are fit, drivers are qualified, and operations meet safety standards.</li>
+                        <li><strong>Cross-Border Road Transport Act, No. 4 of 1998:</strong> Regulates the transport of goods and passengers across South Africa's borders. If PigeeBack facilitates cross-border transport, providers must comply with permit requirements from the Cross-Border Road Transport Agency (C-BRTA).</li>
+                        <li><strong>AARTO (Administrative Adjudication of Road Traffic Offences) Act:</strong> While primarily dealing with traffic infringements and a demerit system, compliance with road traffic laws is crucial, and AARTO impacts how offences are managed.</li>
+                    </ul>
+                    <h3>Protection of Personal Information Act (POPIA), No. 4 of 2013</h3>
+                    <p>POPIA governs how personal information is processed (collected, used, stored, shared, and destroyed). PigeeBack and its users (especially service providers who collect client data) must comply. Key principles include:</p>
+                    <ul>
+                        <li><strong>Accountability:</strong> Taking responsibility for compliance.</li>
+                        <li><strong>Processing Limitation:</strong> Processing information lawfully and minimally. Obtain consent where required.</li>
+                        <li><strong>Purpose Specification:</strong> Collecting information for a specific, defined purpose.</li>
+                        <li><strong>Further Processing Limitation:</strong> Ensuring any further processing is compatible with the original purpose.</li>
+                        <li><strong>Information Quality:</strong> Keeping information accurate and up-to-date.</li>
+                        <li><strong>Openness:</strong> Being transparent about data processing activities.</li>
+                        <li><strong>Security Safeguards:</strong> Protecting personal information from loss, damage, or unauthorized access.</li>
+                        <li><strong>Data Subject Participation:</strong> Allowing individuals to access and correct their information.</li>
+                    </ul>
+                    <p class="mt-4"><strong>Disclaimer:</strong> This information is for general guidance only. Users should consult with legal professionals for specific advice related to their operations and POPIA compliance.</p>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="home-cta" class="py-16 md:py-24 bg-pigee-blue text-light"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl sm:text-4xl font-bold mb-6">Ready to Join the PigeeBack Revolution?</h2>
-                    <p class="text-lg text-gray-200 mb-8 max-w-2xl mx-auto">Send packages smartly, or earn by utilizing your travel.</p>
-                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <a href="#signup" data-target="signup" class="nav-link cta-button cta-button-green px-8 py-3 text-lg w-full sm:w-auto">Sign Up as a Client</a>
-                        <a href="#signup" data-target="signup" data-type="provider" class="nav-link cta-button cta-button-outline-light px-8 py-3 text-lg w-full sm:w-auto">Sign Up as a Provider</a>
+        <section id="resources" class="page-slide">
+            <div class="w-full max-w-5xl">
+                <h1 class="page-main-title !mb-6">Resources for Transporters</h1>
+                
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-pigee-blue mb-3 text-center">Ride-Hailing & Metered Taxis</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div class="card !p-4">
+                            <h4 class="font-semibold text-pigee-green">Uber Driver</h4>
+                            <p class="text-xs my-1">Requirements typically include a valid PrDP, suitable vehicle, background check. Visit their official site for current details.</p>
+                            <a href="https://www.uber.com/za/en/drive/" target="_blank" class="external-link">Uber Driver SA &rarr;</a>
+                        </div>
+                        <div class="card !p-4">
+                            <h4 class="font-semibold text-pigee-green">Bolt Driver</h4>
+                            <p class="text-xs my-1">Similar requirements to Uber. Check Bolt's driver portal for specifics in South Africa.</p>
+                            <a href="https://bolt.eu/en-za/driver/" target="_blank" class="external-link">Bolt Driver SA &rarr;</a>
+                        </div>
+                        <div class="card !p-4 md:col-span-2">
+                            <h4 class="font-semibold text-pigee-green">Metered Taxi / Minibus Taxi</h4>
+                            <p class="text-xs my-1">Operating a taxi involves permits from local/provincial transport authorities, vehicle compliance, and often association membership. Regulations vary by municipality.</p>
+                            <a href="https://www.gov.za/services/public-transport/apply-taxi-operating-licence" target="_blank" class="external-link">Gov.za Taxi Info &rarr;</a>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div> <div id="contact" class="page-content">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 class="page-section-title">Contact Us</h1>
-                <p class="text-center text-lg text-gray-700 mb-10 max-w-xl mx-auto">
-                    We'd love to hear from you! Questions, partnerships, or anything else, our team is ready.
-                </p>
-                <div class="bg-white p-8 sm:p-10 rounded-xl shadow-2xl">
-                    <form action="#" method="POST" id="contactForm">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><label for="contact-first-name" class="block text-sm font-medium text-gray-700">First Name</label><input type="text" name="first-name" id="contact-first-name" autocomplete="given-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div>
-                            <div><label for="contact-last-name" class="block text-sm font-medium text-gray-700">Last Name</label><input type="text" name="last-name" id="contact-last-name" autocomplete="family-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div>
-                            <div class="md:col-span-2"><label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label><input type="email" name="email" id="contact-email" autocomplete="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div>
-                            <div class="md:col-span-2"><label for="contact-subject" class="block text-sm font-medium text-gray-700">Subject</label><input type="text" name="subject" id="contact-subject" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div>
-                            <div class="md:col-span-2"><label for="contact-message" class="block text-sm font-medium text-gray-700">Message</label><textarea id="contact-message" name="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></textarea></div>
+
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-pigee-blue mb-3 text-center">Bus Services</h3>
+                     <p class="text-center text-xs text-gray-600 mb-3">Information for becoming an operator or finding services.</p>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="card !p-3"><a href="https://www.greyhound.co.za/" target="_blank" class="block text-center font-medium text-pigee-blue hover:text-pigee-green">Greyhound</a></div>
+                        <div class="card !p-3"><a href="https://www.intercape.co.za/" target="_blank" class="block text-center font-medium text-pigee-blue hover:text-pigee-green">Intercape</a></div>
+                        <div class="card !p-3"><a href="https://www.putco.co.za/" target="_blank" class="block text-center font-medium text-pigee-blue hover:text-pigee-green">PUTCO</a></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-pigee-blue mb-4 text-center">Key Regulators & Bodies</h3>
+                    <div class="swiper-container" id="regulatorsCarousel">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <h4>Department of Transport (DoT)</h4>
+                                <p class="summary">National body responsible for transport policy, legislation, and overall regulation in South Africa.</p>
+                                <div class="details">
+                                    <p>The DoT oversees all modes of transport, including road, rail, maritime, and aviation. They develop strategies and ensure the transport system supports economic growth and social development.</p>
+                                </div>
+                                <a href="https://www.transport.gov.za/" target="_blank" class="external-link">Visit DoT Website &rarr;</a>
+                            </div>
+                            <div class="swiper-slide">
+                                <h4>Road Traffic Management Corporation (RTMC)</h4>
+                                <p class="summary">Manages road traffic, enhances safety, and ensures compliance with road traffic legislation.</p>
+                                <div class="details">
+                                    <p>The RTMC is responsible for road safety campaigns, driver and vehicle licensing standards (eNaTIS), traffic law enforcement coordination, and road traffic information.</p>
+                                </div>
+                                <a href="https://www.rtmc.co.za/" target="_blank" class="external-link">Visit RTMC Website &rarr;</a>
+                            </div>
+                            <div class="swiper-slide">
+                                <h4>Cross-Border Road Transport Agency (C-BRTA)</h4>
+                                <p class="summary">Regulates and facilitates the movement of passengers and goods by road across SA's borders.</p>
+                                <div class="details">
+                                    <p>The C-BRTA issues permits for cross-border operators, promotes orderly transport, and advises the Minister of Transport on cross-border matters.</p>
+                                </div>
+                                <a href="https://www.cbrta.co.za/" target="_blank" class="external-link">Visit C-BRTA Website &rarr;</a>
+                            </div>
+                             <div class="swiper-slide">
+                                <h4>Information Regulator (South Africa)</h4>
+                                <p class="summary">Responsible for enforcing POPIA and PAIA (Promotion of Access to Information Act).</p>
+                                <div class="details">
+                                    <p>Ensures that organizations process personal information lawfully and transparently. Handles complaints regarding data privacy breaches and access to information requests.</p>
+                                </div>
+                                <a href="https://inforegulator.org.za/" target="_blank" class="external-link">Visit InfoReg Website &rarr;</a>
+                            </div>
                         </div>
-                        <div class="mt-8 text-right"><button type="submit" class="cta-button cta-button-green px-8 py-3 text-base">Send Message</button></div>
-                    </form>
-                    <div class="mt-12 border-t pt-10">
-                        <h3 class="text-xl font-semibold text-pigee-blue mb-4">Other Ways to Reach Us</h3>
-                        <p class="text-gray-700 mb-2"><strong>Email:</strong> <a href="mailto:pigeemine@gmail.com" class="text-pigee-green hover:underline">pigeemine@gmail.com</a></p>
-                        <p class="text-gray-700 mb-2"><strong>Address:</strong> (Your Company Address Here), Johannesburg, South Africa</p>
+                        <div class="swiper-pagination"></div>
                     </div>
                 </div>
             </div>
-        </div> <div id="signup" class="page-content">
-            <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 class="page-section-title">Create Your Account</h1>
-                <p class="text-center text-gray-700 mb-8">Join PigeeBack today!</p>
-                <div class="bg-white p-8 rounded-xl shadow-2xl">
-                    <form id="signupForm">
-                        <div class="space-y-6">
-                            <div><label for="signup-fullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" name="fullName" id="signup-fullName" autocomplete="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm"></div>
-                            <div><label for="signup-email" class="block text-sm font-medium text-gray-700">Email address</label><input id="signup-email" name="email" type="email" autocomplete="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm"></div>
-                            <div><label for="signup-password" class="block text-sm font-medium text-gray-700">Password</label><input id="signup-password" name="password" type="password" autocomplete="new-password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm"></div>
-                            <div><label for="signup-confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label><input id="signup-confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm"></div>
-                            <div><label for="signup-accountType" class="block text-sm font-medium text-gray-700">I want to:</label><select id="signup-accountType" name="accountType" required class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm"><option value="client">Send Packages (Client)</option><option value="provider">Deliver Packages (Service Provider)</option></select></div>
-                            <div class="flex items-center"><input id="signup-terms" name="terms" type="checkbox" required class="h-4 w-4 text-pigee-green border-gray-300 rounded focus:ring-pigee-green"><label for="signup-terms" class="ml-2 block text-sm text-gray-900">I agree to the <a href="#terms" data-target="terms" class="nav-link font-medium text-pigee-blue hover:text-pigee-green">Terms and Conditions</a></label></div>
-                            <div><button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-dark cta-button-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pigee-green">Create Account</button></div>
-                        </div>
-                    </form>
-                    <p class="mt-6 text-center text-sm text-gray-600">Already have an account? <a href="#dashboard" data-target="dashboard" class="nav-link font-medium text-pigee-blue hover:text-pigee-green">Log in</a></p>
-                </div>
-            </div>
-        </div> <div id="dashboard" class="page-content">
-            <div id="auth-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div id="loginFormContainer" class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-2xl">
-                    <h1 class="page-section-title text-2xl mb-6">Login to your Dashboard</h1>
-                    <form id="loginForm">
-                        <div class="space-y-6">
-                            <div><label for="loginEmail" class="block text-sm font-medium text-gray-700">Email address</label><input id="loginEmail" name="email" type="email" autocomplete="email" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm"></div>
-                            <div><label for="loginPassword" class="block text-sm font-medium text-gray-700">Password</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm"></div>
-                            <div><button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-light cta-button-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pigee-blue">Log In</button></div>
-                        </div>
-                    </form>
-                    <p class="mt-6 text-center text-sm text-gray-600">Don't have an account? <a href="#signup" data-target="signup" class="nav-link font-medium text-pigee-blue hover:text-pigee-green">Sign up</a></p>
-                    <p id="loginErrorMessage" class="mt-4 text-center text-sm text-red-600"></p>
-                </div>
-                <div id="dashboardContent" class="hidden">
-                    <h1 class="page-section-title">Welcome to your Dashboard, <span id="dashboardUserName">User</span>!</h1>
-                    <p class="text-center text-lg text-gray-700 mb-10">Manage your PigeeBack activities.</p>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div class="card"><h3 class="text-xl font-semibold text-pigee-blue mb-3">My Shipments</h3><p class="text-gray-600">View packages you are sending.</p><a href="#" class="mt-4 inline-block text-pigee-green hover:underline">View Shipments &rarr;</a></div>
-                        <div class="card"><h3 class="text-xl font-semibold text-pigee-green mb-3">My Deliveries</h3><p class="text-gray-600">Manage packages you are delivering.</p><a href="#" class="mt-4 inline-block text-pigee-green hover:underline">View Deliveries &rarr;</a></div>
-                        <div class="card"><h3 class="text-xl font-semibold text-pigee-blue mb-3">Post a New Route</h3><p class="text-gray-600">Offer your empty space.</p><a href="#" class="mt-4 inline-block text-pigee-green hover:underline">Post Route &rarr;</a></div>
-                    </div>
-                </div>
-            </div>
-        </div> <div id="terms" class="page-content">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 class="page-section-title">Terms and Conditions</h1>
-                <div class="bg-white p-8 sm:p-10 rounded-xl shadow-2xl prose lg:prose-xl">
-                    <p>Welcome to PigeeBack!</p>
-                    <p>These terms and conditions outline the rules and regulations for the use of PigeeBack's Website, located at [Your Website URL Here].</p>
-                    <p>By accessing this website we assume you accept these terms and conditions. Do not continue to use PigeeBack if you do not agree to take all of the terms and conditions stated on this page.</p>
-                    
-                    <h2>1. The Platform</h2>
-                    <p>PigeeBack provides a platform for users to connect with individuals or companies offering courier/delivery services ("Service Providers") and those seeking such services ("Clients"). PigeeBack is not a courier company itself and does not directly provide delivery services, nor does it employ Service Providers.</p>
-                    
-                    <h2>2. User Accounts</h2>
-                    <p>To use certain features of the platform, you must register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete.</p>
-                    
-                    <h2>3. User Conduct</h2>
-                    <p>You agree not to use the platform for any unlawful purpose or in any way that interrupts, damages, impairs, or renders PigeeBack less efficient. You agree not to use the platform to transport illegal, hazardous, or prohibited items.</p>
+        </section>
 
-                    <h2>4. Transactions Between Users</h2>
-                    <p>PigeeBack is a platform provider. All transactions, agreements, and deliveries are solely between the Client and the Service Provider. PigeeBack is not a party to these agreements and is not responsible for the performance or non-performance of either party.</p>
-                    <p>We strongly advise users to exercise caution and good judgment when interacting with others on the platform. Meet in public places for exchanges and ensure clear communication regarding the package, payment, and delivery terms.</p>
+        <section id="cta" class="page-slide">
+            <div class="text-center max-w-3xl"><h2 class="page-main-title !text-white">Join the PigeeBack Revolution!</h2><p class="text-lg text-gray-200 mb-8">Send packages smartly, or earn by utilizing your travel.</p><div class="flex flex-col sm:flex-row justify-center items-center gap-4"><a href="#signup" data-target="signup" class="nav-link cta-button cta-button-green px-8 py-3 text-lg w-full sm:w-auto">Sign Up as a Client</a><a href="#signup" data-target="signup" data-type="provider" class="nav-link cta-button cta-button-outline-light px-8 py-3 text-lg w-full sm:w-auto">Sign Up as a Provider</a></div></div>
+        </section>
 
-                    <h2>5. Disclaimer of Liability</h2>
-                    <p>PigeeBack makes no representations or warranties regarding the quality, safety, or legality of the items transported or the services offered by Service Providers. We are not liable for any loss or damage, including but not limited to, loss of items, damage to items, personal injury, or financial loss arising from the use of the platform.</p>
-                    <p>Our tracking features rely on third-party services and network reliability; we cannot guarantee their accuracy at all times.</p>
+        <section id="contact" class="page-slide">
+            <div class="max-w-4xl w-full"><h1 class="page-main-title">Contact Us</h1><div class="bg-white p-8 sm:p-10 rounded-xl shadow-2xl w-full"><p class="text-center text-lg text-gray-700 mb-8">We'd love to hear from you!</p><form action="#" method="POST" id="contactForm" class="max-w-xl mx-auto"><div class="grid grid-cols-1 gap-6"><div><label for="contact-first-name" class="block text-sm font-medium text-gray-700">First Name</label><input type="text" name="first-name" id="contact-first-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><label for="contact-email" class="block text-sm font-medium text-gray-700">Email</label><input type="email" name="email" id="contact-email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><label for="contact-message" class="block text-sm font-medium text-gray-700">Message</label><textarea id="contact-message" name="message" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></textarea></div></div><div class="mt-6 text-right"><button type="submit" class="cta-button cta-button-green px-8 py-3 text-base">Send Message</button></div></form><div class="mt-10 border-t pt-8 text-center"><h3 class="text-lg font-semibold text-pigee-blue mb-3">Connect With Us</h3><p class="text-sm text-gray-700">Email: <a href="mailto:pigeemine@gmail.com" class="hover:text-pigee-green">pigeemine@gmail.com</a></p><div class="flex justify-center space-x-4 mt-2"> <a href="#" aria-label="Facebook" class="text-gray-500 hover:text-pigee-blue"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a> <a href="https://twitter.com/PigeeMine" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="text-gray-500 hover:text-pigee-blue"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a></div><p class="mt-6 text-xs text-gray-500">&copy; <span id="currentYear"></span> PigeeBack. All Rights Reserved.</p></div></div></div>
+        </section>
 
-                    <h2>6. Intellectual Property</h2>
-                    <p>The content on the PigeeBack platform, including text, graphics, logos, and software, is the property of PigeeBack or its licensors and is protected by copyright and other intellectual property laws.</p>
+        <section id="signup" class="page-slide">
+            <div class="max-w-md w-full"><h1 class="page-main-title">Create Your Account</h1><div class="bg-white p-8 rounded-xl shadow-2xl w-full"><form id="signupForm"><div class="space-y-4"><div><label for="signup-fullName" class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" name="fullName" id="signup-fullName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><label for="signup-email" class="block text-sm font-medium text-gray-700">Email</label><input id="signup-email" name="email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><label for="signup-password" class="block text-sm font-medium text-gray-700">Password</label><input id="signup-password" name="password" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><label for="signup-confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label><input id="signup-confirmPassword" name="confirmPassword" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><label for="signup-accountType" class="block text-sm font-medium text-gray-700">I want to:</label><select id="signup-accountType" name="accountType" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required><option value="client">Send Packages</option><option value="provider">Deliver Packages</option></select></div><div class="flex items-center"><input id="signup-terms" name="terms" type="checkbox" required class="h-4 w-4 text-pigee-green border-gray-300 rounded focus:ring-pigee-green"><label for="signup-terms" class="ml-2 block text-sm text-gray-900">I agree to <a href="#terms" data-target="terms" class="nav-link font-medium text-pigee-blue hover:text-pigee-green">Terms</a></label></div><div><button type="submit" class="w-full cta-button cta-button-green py-3">Create Account</button></div></div></form><p class="mt-6 text-center text-sm text-gray-600">Already have an account? <a href="#dashboard" data-target="dashboard" class="nav-link font-medium text-pigee-blue hover:text-pigee-green">Log in</a></p></div></div>
+        </section>
 
-                    <h2>7. Modifications to Terms</h2>
-                    <p>PigeeBack reserves the right to modify these terms and conditions at any time. We will notify users of any changes by posting the new terms on the website. Your continued use of the platform after such changes constitutes your acceptance of the new terms.</p>
-
-                    <h2>8. Governing Law</h2>
-                    <p>These terms shall be governed and construed in accordance with the laws of South Africa, without regard to its conflict of law provisions.</p>
-
+        <section id="dashboard" class="page-slide">
+            <div id="auth-container" class="w-full max-w-md"><div id="loginFormContainer" class="bg-white p-8 rounded-xl shadow-2xl w-full"><h1 class="page-main-title !text-2xl !mb-6">Login to Dashboard</h1><form id="loginForm"><div class="space-y-4"><div><label for="loginEmail" class="block text-sm font-medium text-gray-700">Email</label><input id="loginEmail" name="email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><label for="loginPassword" class="block text-sm font-medium text-gray-700">Password</label><input id="loginPassword" name="password" type="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pigee-green focus:border-pigee-green sm:text-sm" required></div><div><button type="submit" class="w-full cta-button cta-button-blue py-3">Log In</button></div></div></form><p class="mt-6 text-center text-sm text-gray-600">No account? <a href="#signup" data-target="signup" class="nav-link font-medium text-pigee-blue hover:text-pigee-green">Sign up</a></p><p id="loginErrorMessage" class="mt-4 text-center text-sm text-red-600"></p></div><div id="dashboardContent" class="hidden w-full"><h1 class="page-main-title">Welcome, <span id="dashboardUserName">User</span>!</h1><p class="text-center text-lg text-gray-700 mb-10">Manage your PigeeBack activities.</p><div class="grid md:grid-cols-2 gap-6"><div class="card"><h3 class="text-xl font-semibold text-pigee-blue mb-3">My Shipments</h3><p class="text-gray-600">View packages you send.</p><a href="#" class="mt-4 inline-block text-pigee-green hover:underline">View &rarr;</a></div><div class="card"><h3 class="text-xl font-semibold text-pigee-green mb-3">My Deliveries</h3><p class="text-gray-600">Manage packages you deliver.</p><a href="#" class="mt-4 inline-block text-pigee-green hover:underline">View &rarr;</a></div></div></div></div>
+        </section>
+        
+        <section id="terms" class="page-slide">
+            <div class="w-full max-w-4xl">
+                <h1 class="page-main-title !mb-6">Terms and Conditions</h1>
+                <div class="content-box text-sm">
+                    <p>Welcome to PigeeBack! These terms govern your use of our platform.</p>
+                    <h3>1. The Platform</h3><p>PigeeBack connects Clients seeking delivery with Service Providers. We are not a courier company ourselves and don't handle deliveries directly.</p>
+                    <h3>2. User Accounts</h3><p>You must register to use many features, providing accurate information. You are responsible for your account's security.</p>
+                    <h3>3. User Conduct & Responsibilities</h3><p>Use the platform lawfully. Do not transport illegal/hazardous items. Clients are responsible for accurately describing packages. Service Providers are responsible for safe and timely delivery as agreed.</p>
+                    <h3>4. Transactions & Liability</h3><p>Agreements are strictly between Client and Service Provider. PigeeBack is not party to these and not liable for loss, damage, or disputes. We recommend users exercise caution, verify details, and consider insurance for valuable items. PigeeBack does not vet all users extensively beyond basic registration.</p>
+                    <h3>5. POPIA Compliance</h3><p>By using PigeeBack, you consent to us processing your personal information as described in our Privacy Policy (link to be added) and in accordance with the Protection of Personal Information Act (POPIA). Service Providers must also handle any client data they receive in compliance with POPIA.</p>
+                    <h3>6. Intellectual Property</h3><p>All content on PigeeBack (logos, text, software) is our property or that of our licensors.</p>
+                    <h3>7. Modifications & Termination</h3><p>We may modify these terms or suspend/terminate services or accounts for breaches.</p>
+                    <h3>8. Governing Law</h3><p>These terms are governed by South African law.</p>
                     <p><em>Last updated: May 23, 2025</em></p>
                 </div>
             </div>
-        </div> </main>
+        </section>
 
-    <footer class="bg-dark text-gray-300 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <h3 class="text-xl font-semibold text-pigee-green mb-4 logo-text"><span class="pigee !text-white">Pigee</span><span class="back">Back</span></h3>
-                    <p class="text-sm">Revolutionizing Courier Services.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#home-about" data-target="home-about" class="nav-link hover:text-pigee-green">About Us</a></li>
-                        <li><a href="#contact" data-target="contact" class="nav-link hover:text-pigee-green">Contact Us</a></li>
-                        <li><a href="#terms" data-target="terms" class="nav-link hover:text-pigee-green">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-pigee-green">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">Connect With Us</h3>
-                    <p class="text-sm mb-2">Email: <a href="mailto:pigeemine@gmail.com" class="hover:text-pigee-green">pigeemine@gmail.com</a></p>
-                    <div class="flex space-x-4 mt-2">
-                        <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-pigee-green"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
-                        <a href="https://twitter.com/PigeeMine" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="text-gray-400 hover:text-pigee-green"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 pt-8 text-center text-sm">
-                <p class="font-semibold">Disclaimer:</p>
-                <p class="max-w-3xl mx-auto text-gray-400">PigeeBack is a platform provider. Transactions are between users. We are not liable for losses. Exercise caution.</p>
-                <p class="mt-4">&copy; <span id="currentYear"></span> PigeeBack. All Rights Reserved. Proof of Concept.</p>
-            </div>
-        </div>
-    </footer>
+    </main>
 
+    <nav id="dot-navigation"></nav>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="js/app.js"></script>
     <script type="module">
-        // This is where you'd initialize Firebase and import its functions
-        // This is a placeholder, actual Firebase integration will be more involved.
+        // Firebase initialization placeholder
         // console.log("Firebase module script loaded.");
-
-        // Ensure firebase-config.js is loaded if you are using it to define firebaseConfig
-        // For this example, we'll assume firebaseConfig is globally available or defined in firebase-config.js
-        // and that firebase-config.js is loaded before this script if it sets a global.
-        // Alternatively, import it:
-        // import firebaseConfig from './firebase-config.js'; // If firebase-config.js exports it
-
-        // Placeholder for Firebase Auth and Firestore (actual imports would be from "firebase/app", "firebase/auth", etc.)
-        // For CDN:
-        // import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-        // const firebaseApp = initializeApp(window.firebaseConfig || {}); // Assuming firebaseConfig is global or from an import
-        // const auth = getAuth(firebaseApp);
-
-        // The auth handling logic from dashboard.html would be moved to app.js
-        // or kept here if this module script handles all Firebase interactions.
     </script>
 </body>
 </html>
