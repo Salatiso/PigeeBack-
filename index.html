@@ -9,10 +9,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            margin: 0; /* Remove default margin */
-            overflow: hidden; /* Prevent body scroll, container will handle it */
         }
-
         /* PigeeBack Color Palette */
         :root {
             --pigee-green: #98CE00; /* Vibrant Lime Green */
@@ -23,76 +20,28 @@
             --text-light: #FFFFFF;   /* Light text for dark backgrounds */
         }
 
-        #page-container {
-            display: flex;
-            width: 100%; /* Should be dynamic based on number of sections */
-            height: 100vh;
-            overflow-x: auto;
-            overflow-y: hidden; /* Prevent vertical scroll on container */
-            scroll-behavior: smooth;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-        }
+        /* Custom styles to use the color palette */
+        .bg-pigee-blue { background-color: var(--pigee-blue); }
+        .text-pigee-blue { color: var(--pigee-blue); }
+        .hover\:text-pigee-blue:hover { color: var(--pigee-blue); }
 
-        .page-section {
-            width: 100vw;
-            height: 100vh;
-            flex-shrink: 0;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem; /* Base padding, adjust per section */
-            box-sizing: border-box; /* Include padding in width/height */
-            position: relative; /* For absolute positioned elements if needed */
-            overflow-y: auto; /* Allow content scroll if it exceeds vh on small screens */
-        }
-
-        /* Section specific styles */
-        #home {
-            background-color: var(--pigee-light-grey);
-            color: var(--text-dark);
-        }
-        #about {
-            background-color: var(--pigee-blue);
-            color: var(--text-light);
-        }
-        #how-it-works {
-            background-color: var(--text-light);
-            color: var(--text-dark);
-        }
-        #services {
-            background-color: var(--pigee-green);
-            color: var(--text-dark); /* Or --text-light if contrast is better */
-        }
-        #cta-section { /* Renamed from generic CTA for clarity */
-            background-color: var(--pigee-grey);
-            color: var(--text-light);
-        }
-        #contact {
-            background-color: var(--pigee-light-grey);
-            color: var(--text-dark);
-        }
+        .bg-pigee-green { background-color: var(--pigee-green); }
+        .text-pigee-green { color: var(--pigee-green); }
+        .hover\:bg-pigee-green-dark:hover { background-color: #86b300; /* Darker green */ }
         
-        .section-title {
-            @apply text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8;
-        }
-        .card { /* Updated card style for new color scheme */
-            @apply bg-white p-6 rounded-lg shadow-xl transition-shadow duration-300;
-        }
-        .card-dark-bg { /* Card for dark backgrounds */
-             @apply bg-opacity-10 bg-white p-6 rounded-lg shadow-xl transition-shadow duration-300;
-             color: var(--text-light);
-        }
-        .card-dark-bg h3 {
-            color: var(--pigee-green); /* Accent color for heading on dark cards */
-        }
+        .border-pigee-green { border-color: var(--pigee-green); }
 
+        .bg-pigee-grey { background-color: var(--pigee-grey); }
+        .text-pigee-grey { color: var(--pigee-grey); }
 
-        .cta-button {
-            @apply font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105;
-        }
+        .bg-pigee-light-grey { background-color: var(--pigee-light-grey); }
+
+        .text-dark { color: var(--text-dark); }
+        .text-light { color: var(--text-light); }
+
+        .logo-text .pigee { color: var(--pigee-blue); }
+        .logo-text .back { color: var(--pigee-green); }
+        
         .cta-button-green {
             background-color: var(--pigee-green);
             color: var(--text-dark); /* Or white if better contrast */
@@ -107,119 +56,98 @@
         .cta-button-blue:hover {
             background-color: #131a5c; /* Darker blue */
         }
-         .cta-button-outline-light {
+        .cta-button-outline-light {
             @apply border-2 border-white text-white hover:bg-white hover:text-pigee-grey;
         }
-
-        /* Dot Navigation */
-        #dot-navigation {
-            position: fixed;
-            right: 1.5rem; /* 24px */
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem; /* 12px */
-            z-index: 100;
+        .section-title {
+            @apply text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12;
         }
-
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: var(--pigee-grey);
-            opacity: 0.5;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .card {
+            @apply bg-white p-6 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300;
         }
-        .dot.active, .dot:hover {
-            background-color: var(--pigee-blue); /* Active/hover color */
-            opacity: 1;
-            transform: scale(1.2);
-        }
-        #dot-navigation.dark-dots .dot { /* For light backgrounds */
-             background-color: var(--pigee-blue);
-             opacity: 0.5;
-        }
-        #dot-navigation.dark-dots .dot.active, #dot-navigation.dark-dots .dot:hover {
-            background-color: var(--pigee-green);
-            opacity: 1;
-        }
-
-
-        /* Logo styling */
-        .logo-text .pigee {
-            color: var(--pigee-blue);
-        }
-        .logo-text .back {
-            color: var(--pigee-green);
-        }
-        /* Specific for home section logo */
-        #home .logo-text .pigee { color: var(--pigee-blue); }
-        #home .logo-text .back { color: var(--pigee-green); }
-
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .section-title {
-                @apply text-2xl mb-4;
-            }
-            .page-section {
-                padding: 1.5rem;
-            }
-            .card, .card-dark-bg {
-                @apply p-4;
-            }
-             #dot-navigation {
-                right: 1rem; /* 16px */
-                gap: 0.5rem; /* 8px */
-            }
-            .dot {
-                width: 10px;
-                height: 10px;
-            }
-        }
-
     </style>
-</head>
-<body class="bg-gray-50 text-gray-700">
+    <link rel="stylesheet" href="css/tailwind.css"> </head>
+<body class="bg-pigee-light-grey text-dark">
 
-    <div id="page-container">
-        <section id="home" class="page-section">
-            <div class="text-center max-w-3xl mx-auto">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <img src="img/logo.svg" alt="PigeeBack Logo" class="h-10 w-auto">
+                        <span class="text-2xl font-bold logo-text"><span class="pigee">Pigee</span><span class="back">Back</span></span>
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="text-pigee-blue hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Home</a>
+                        <a href="#about" class="text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">About</a>
+                        <a href="#how-it-works" class="text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">How It Works</a>
+                        <a href="#services" class="text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Services</a>
+                        <a href="contact.html" class="text-gray-700 hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Contact</a>
+                        <a href="signup.html" class="ml-4 cta-button cta-button-green px-4 py-2 text-sm">Sign Up</a>
+                        <a href="dashboard.html" class="ml-2 cta-button cta-button-blue px-4 py-2 text-sm">Login</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-pigee-green hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-pigee-green" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block text-pigee-blue hover:bg-pigee-light-grey px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#about" class="block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">About</a>
+                <a href="#how-it-works" class="block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">How It Works</a>
+                <a href="#services" class="block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Services</a>
+                <a href="contact.html" class="block text-gray-700 hover:bg-pigee-light-grey hover:text-pigee-green px-3 py-2 rounded-md text-base font-medium">Contact</a>
+                <a href="signup.html" class="block w-full text-center cta-button cta-button-green mt-2 py-2">Sign Up</a>
+                <a href="dashboard.html" class="block w-full text-center cta-button cta-button-blue mt-2 py-2">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home-hero" class="bg-pigee-light-grey py-20 md:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-dark leading-tight">
                     Welcome to <span class="logo-text"><span class="pigee">Pigee</span><span class="back">Back</span></span>
                 </h1>
-                <p class="mt-6 text-lg sm:text-xl text-gray-700">
+                <p class="mt-6 text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto">
                     The smart, cost-effective, and eco-friendly way to send and deliver packages. Leverage existing journeys, save money, and optimize resources.
                 </p>
                 <div class="mt-10">
-                    <a href="#how-it-works" data-target-section="how-it-works" class="cta-button cta-button-green text-lg section-link">Learn How It Works</a>
+                    <a href="signup.html" class="cta-button cta-button-green text-lg px-8 py-3">Get Started</a>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="page-section">
-            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                <div class="order-2 md:order-1">
-                    <h2 class="section-title text-left !text-white">What is <span class="logo-text !font-bold"><span class="text-white">Pigee</span><span class="back">Back</span></span>?</h2>
-                    <div class="text-lg space-y-4">
+        <section id="about" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title text-pigee-blue">What is <span class="logo-text"><span class="pigee">Pigee</span><span class="back">Back</span></span>?</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="https://placehold.co/600x400/98CE00/1A237E?text=PigeeBack+Concept" alt="PigeeBack Concept Illustration" class="rounded-lg shadow-xl w-full">
+                    </div>
+                    <div class="text-lg text-gray-700 space-y-4">
                         <p>PigeeBack is an innovative platform connecting people who need to send packages with those already travelling along the same routes. Whether you're an individual looking to make extra cash on your commute or a courier company aiming to fill empty space, PigeeBack is your solution.</p>
                         <p>Our vision is to transform the courier industry by making it more efficient, affordable, and sustainable. We put the power back in your hands, offering a win-win for both clients and service providers.</p>
+                        <p>Gone are the days of expensive, rigid courier services and half-empty delivery vans. With PigeeBack, every journey has the potential to be a delivery opportunity!</p>
                     </div>
-                </div>
-                <div class="order-1 md:order-2">
-                    <img src="https://placehold.co/600x450/98CE00/1A237E?text=PigeeBack+Connects" alt="PigeeBack Concept Illustration" class="rounded-lg shadow-xl w-full h-auto max-h-[450px] object-cover">
                 </div>
             </div>
         </section>
 
-        <section id="how-it-works" class="page-section">
-            <div class="max-w-5xl mx-auto w-full">
-                <h2 class="section-title" style="color: var(--pigee-blue);">How PigeeBack Works</h2>
-                <div class="grid md:grid-cols-2 gap-8 md:gap-10">
+        <section id="how-it-works" class="py-16 md:py-24 bg-pigee-light-grey">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title text-pigee-blue">How PigeeBack Works</h2>
+                <div class="grid md:grid-cols-2 gap-10">
                     <div class="card">
-                        <h3 class="text-2xl font-semibold mb-4" style="color: var(--pigee-blue);">For Clients</h3>
+                        <h3 class="text-2xl font-semibold text-pigee-blue mb-4">For Clients (Sending a Package)</h3>
                         <ol class="list-decimal list-inside space-y-3 text-gray-700">
                             <li><strong>Sign Up & Search:</strong> Register and find providers on your route.</li>
                             <li><strong>Request Quotes:</strong> Get the best price from multiple providers.</li>
@@ -229,7 +157,7 @@
                         </ol>
                     </div>
                     <div class="card">
-                        <h3 class="text-2xl font-semibold mb-4" style="color: var(--pigee-green);">For Service Providers</h3>
+                        <h3 class="text-2xl font-semibold text-pigee-green mb-4">For Service Providers (Delivering)</h3>
                         <ol class="list-decimal list-inside space-y-3 text-gray-700">
                             <li><strong>Register & List Routes:</strong> Sign up and share your travel plans.</li>
                             <li><strong>Receive Requests:</strong> Get notified by clients on your routes.</li>
@@ -242,175 +170,76 @@
             </div>
         </section>
 
-        <section id="services" class="page-section">
-            <div class="max-w-5xl mx-auto w-full">
-                <h2 class="section-title" style="color: var(--pigee-blue);">Our Service Tiers</h2>
-                <p class="text-center text-lg text-gray-800 mb-10 md:mb-12 max-w-3xl mx-auto">PigeeBack offers different tiers to cater to a wide range of service providers, ensuring flexibility and trust.</p>
+        <section id="services" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title text-pigee-blue">Our Service Tiers</h2>
+                <p class="text-center text-lg text-gray-700 mb-12 max-w-3xl mx-auto">PigeeBack offers different tiers to cater to a wide range of service providers, ensuring flexibility and trust.</p>
                 <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="card text-center">
-                        <div class="text-5xl mb-4">🧍</div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Informal</h3>
-                        <p class="text-gray-700">Casual individuals transporting small parcels. No company registration needed.</p>
+                        <div class="text-6xl mb-4 text-pigee-green">🧍</div>
+                        <h3 class="text-xl font-semibold text-dark mb-2">Informal</h3>
+                        <p class="text-gray-700">Perfect for casual individuals. Transport small parcels along your existing routes. No formal company registration needed.</p>
                     </div>
                     <div class="card text-center">
-                        <div class="text-5xl mb-4">🚚</div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Semi-Formal</h3>
-                        <p class="text-gray-700">Small businesses or registered individuals. Enhanced credibility.</p>
+                        <div class="text-6xl mb-4 text-pigee-blue">🚚</div>
+                        <h3 class="text-xl font-semibold text-dark mb-2">Semi-Formal</h3>
+                        <p class="text-gray-700">Ideal for small businesses or individuals operating as a registered company. Enhanced credibility.</p>
                     </div>
                     <div class="card text-center">
-                         <div class="text-5xl mb-4">🌍</div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Formal</h3>
-                        <p class="text-gray-700">Established couriers. Requires registration and accreditations. Highest trust.</p>
+                        <div class="text-6xl mb-4 text-pigee-grey">🌍</div>
+                        <h3 class="text-xl font-semibold text-dark mb-2">Formal</h3>
+                        <p class="text-gray-700">For established courier companies. Requires company registration and necessary accreditations for various load types.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="cta-section" class="page-section">
-            <div class="text-center max-w-3xl mx-auto">
-                <h2 class="section-title !text-white">Join the PigeeBack Revolution!</h2>
-                <p class="text-lg text-gray-200 mb-8">
-                    Whether you're looking to send a package smartly, or earn by utilizing your travel, PigeeBack is for you.
-                </p>
+        <section class="py-16 md:py-24 bg-pigee-blue text-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Ready to Join the PigeeBack Revolution?</h2>
+                <p class="text-lg text-gray-200 mb-8 max-w-2xl mx-auto">Whether you're looking to send a package smartly, or earn by utilizing your travel, PigeeBack is the platform for you.</p>
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                    <a href="#" class="cta-button cta-button-green w-full sm:w-auto">Sign Up as a Client</a>
-                    <a href="#" class="cta-button cta-button-outline-light w-full sm:w-auto">Sign Up as a Provider</a>
+                    <a href="signup.html" class="cta-button cta-button-green px-8 py-3 text-lg w-full sm:w-auto">Sign Up as a Client</a>
+                    <a href="signup.html?type=provider" class="cta-button cta-button-outline-light px-8 py-3 text-lg w-full sm:w-auto">Sign Up as a Provider</a>
                 </div>
             </div>
         </section>
+    </main>
 
-        <section id="contact" class="page-section">
-            <div class="max-w-lg mx-auto w-full text-center">
-                <h2 class="section-title" style="color: var(--pigee-blue);">Get In Touch</h2>
-                <p class="text-lg text-gray-700 mb-8">Questions, suggestions, or interested in learning more? We'd love to hear from you!</p>
-                <div class="bg-white p-8 rounded-lg shadow-xl">
-                    <p class="text-gray-700">
-                        For inquiries, please reach out via:
-                    </p>
-                    <p class="font-semibold mt-4" style="color: var(--pigee-blue);">
-                        Email: <a href="mailto:pigeemine@gmail.com" class="hover:underline">pigeemine@gmail.com</a>
-                    </p>
-                    <p class="text-gray-700 mt-6">
-                        Follow us on social media:
-                    </p>
-                    <div class="flex justify-center space-x-6 mt-3">
-                        <a href="#" aria-label="Facebook" class="text-gray-500 hover:text-pigee-blue transition-colors">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-                        </a>
-                        <a href="https://twitter.com/PigeeMine" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="text-gray-500 hover:text-pigee-blue transition-colors">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
-                        </a>
+    <footer class="bg-dark text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-pigee-green mb-4 logo-text"><span class="pigee !text-white">Pigee</span><span class="back">Back</span></h3>
+                    <p class="text-sm">Revolutionizing Courier Services. Connecting senders with travelers to make deliveries efficient, affordable, and eco-friendly.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#about" class="hover:text-pigee-green">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-pigee-green">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-pigee-green">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-pigee-green">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-pigee-green">FAQs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Connect With Us</h3>
+                    <p class="text-sm mb-2">Email: <a href="mailto:pigeemine@gmail.com" class="hover:text-pigee-green">pigeemine@gmail.com</a></p>
+                    <div class="flex space-x-4 mt-2">
+                        <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-pigee-green"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
+                        <a href="https://twitter.com/PigeeMine" target="_blank" rel="noopener noreferrer" aria-label="Twitter" class="text-gray-400 hover:text-pigee-green"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
                     </div>
                 </div>
-                 <p class="text-xs text-gray-500 mt-10">&copy; <span id="currentYear"></span> PigeeBack. All Rights Reserved. Proof of Concept.</p>
             </div>
-        </section>
-    </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-sm">
+                <p class="font-semibold">Disclaimer:</p>
+                <p class="max-w-3xl mx-auto text-gray-400">PigeeBack is a platform provider and not a courier company. Transactions are directly between clients and service providers. We are not liable for losses. Please exercise caution and ensure safety during transactions. Be aware of all legal and customs implications for international shipments.</p>
+                <p class="mt-4">&copy; <span id="currentYear"></span> PigeeBack. All Rights Reserved. Proof of Concept.</p>
+            </div>
+        </div>
+    </footer>
 
-    <nav id="dot-navigation">
-        </nav>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const pageContainer = document.getElementById('page-container');
-            const sections = Array.from(document.querySelectorAll('.page-section'));
-            const dotNavigation = document.getElementById('dot-navigation');
-            let currentSectionIndex = 0;
-
-            // Dynamically set the width of the page container
-            pageContainer.style.width = `${sections.length * 100}vw`;
-
-            // Generate dots
-            sections.forEach((section, index) => {
-                const dot = document.createElement('a');
-                dot.classList.add('dot');
-                dot.dataset.index = index;
-                dot.setAttribute('aria-label', `Go to section ${section.id || index + 1}`);
-                if (index === 0) {
-                    dot.classList.add('active');
-                }
-                dot.addEventListener('click', () => {
-                    scrollToSection(index);
-                });
-                dotNavigation.appendChild(dot);
-            });
-
-            const dots = Array.from(dotNavigation.querySelectorAll('.dot'));
-
-            function scrollToSection(index) {
-                if (index >= 0 && index < sections.length) {
-                    pageContainer.scrollLeft = sections[index].offsetLeft;
-                    currentSectionIndex = index;
-                    // updateActiveDot will be called by the observer
-                }
-            }
-            
-            // Handle section links (e.g. "Learn How It Works" button)
-            document.querySelectorAll('.section-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1); // Remove #
-                    const targetSection = sections.findIndex(s => s.id === targetId);
-                    if (targetSection !== -1) {
-                        scrollToSection(targetSection);
-                    }
-                });
-            });
-
-
-            function updateActiveDot() {
-                // Find the section that is most visible or currently snapped
-                // A simple way with scroll-snap is to check which section's offsetLeft is closest to scrollLeft
-                const scrollLeft = pageContainer.scrollLeft;
-                const containerWidth = pageContainer.clientWidth; // viewport width
-
-                let closestIndex = 0;
-                let minDiff = Infinity;
-
-                sections.forEach((section, index) => {
-                    const sectionMidpoint = section.offsetLeft + section.offsetWidth / 2;
-                    const viewportMidpoint = scrollLeft + containerWidth / 2;
-                    const diff = Math.abs(sectionMidpoint - viewportMidpoint);
-                
-                    if (diff < minDiff) {
-                        minDiff = diff;
-                        closestIndex = index;
-                    }
-                });
-                
-                currentSectionIndex = closestIndex;
-
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentSectionIndex);
-                });
-
-                // Change dot colors based on background
-                const currentSection = sections[currentSectionIndex];
-                if (currentSection.id === 'about' || currentSection.id === 'cta-section') { // Dark backgrounds
-                    dotNavigation.classList.remove('dark-dots');
-                } else { // Light backgrounds
-                    dotNavigation.classList.add('dark-dots');
-                }
-            }
-            
-            // Use Intersection Observer for more robust active section detection if scroll-snap is not enough
-            // For now, a scroll event listener is simpler for this PoC with scroll-snap
-            let scrollTimeout;
-            pageContainer.addEventListener('scroll', () => {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(updateActiveDot, 50); // Debounce scroll event
-            });
-            
-            // Set current year in footer
-            const currentYearEl = document.getElementById('currentYear');
-            if (currentYearEl) {
-                 currentYearEl.textContent = new Date().getFullYear();
-            }
-
-            // Initial active dot update
-            updateActiveDot();
-        });
-    </script>
-
+    <script src="js/app.js"></script>
 </body>
 </html>
