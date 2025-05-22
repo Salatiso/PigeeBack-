@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PigeeBack - Smart Courier Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-color: #F3F4F6; /* Light gray background */
+        }
+        .section-title {
+            @apply text-3xl font-bold text-center text-gray-800 mb-8;
+        }
+        .card {
+            @apply bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300;
+        }
+        .cta-button {
+            @apply bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105;
+        }
+        nav a {
+            @apply text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+        }
+        nav a.active {
+            @apply text-indigo-700 font-semibold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-700">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold text-indigo-600">PigeeBack</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="active">Home</a>
+                        <a href="#about">About Us</a>
+                        <a href="#how-it-works">How It Works</a>
+                        <a href="#services">Services</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#about" class="block text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium">About Us</a>
+                <a href="#how-it-works" class="block text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium">How It Works</a>
+                <a href="#services" class="block text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium">Services</a>
+                <a href="#contact" class="block text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-bg py-20 md:py-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+                Welcome to <span class="text-indigo-600">PigeeBack</span>
+            </h1>
+            <p class="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                The smart, cost-effective, and eco-friendly way to send and deliver packages. Leverage existing journeys, save money, and optimize resources.
+            </p>
+            <div class="mt-10">
+                <a href="#how-it-works" class="cta-button text-lg">Learn How It Works</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title">What is PigeeBack?</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://placehold.co/600x400/E0E7FF/4F46E5?text=PigeeBack+Concept" alt="PigeeBack Concept Illustration" class="rounded-lg shadow-xl">
+                </div>
+                <div class="text-lg text-gray-600 space-y-4">
+                    <p>PigeeBack is an innovative platform connecting people who need to send packages with those already travelling along the same routes. Whether you're an individual looking to make extra cash on your commute or a courier company aiming to fill empty space, PigeeBack is your solution.</p>
+                    <p>Our vision is to transform the courier industry by making it more efficient, affordable, and sustainable. We put the power back in your hands, offering a win-win for both clients and service providers.</p>
+                    <p>Gone are the days of expensive, rigid courier services and half-empty delivery vans. With PigeeBack, every journey has the potential to be a delivery opportunity!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-16 md:py-24 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title">How PigeeBack Works</h2>
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-indigo-600 mb-4">For Clients (Sending a Package)</h3>
+                    <ol class="list-decimal list-inside space-y-3 text-gray-600">
+                        <li><strong>Sign Up & Search:</strong> Register on PigeeBack and search for service providers travelling your desired route.</li>
+                        <li><strong>Request Quotes:</strong> Connect with multiple providers to get the best price and service.</li>
+                        <li><strong>Choose & Arrange:</strong> Select your preferred provider and arrange pickup/drop-off details directly.</li>
+                        <li><strong>Track Your Package:</strong> Stay updated on your package's journey (feature dependent on provider).</li>
+                        <li><strong>Save Money & Time:</strong> Enjoy cheaper, more flexible delivery options.</li>
+                    </ol>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-green-600 mb-4">For Service Providers (Delivering Packages)</h3>
+                    <ol class="list-decimal list-inside space-y-3 text-gray-600">
+                        <li><strong>Register & List Routes:</strong> Sign up and list your regular or planned travel routes.</li>
+                        <li><strong>Receive Requests:</strong> Get notified by clients needing deliveries along your routes.</li>
+                        <li><strong>Provide Quotes:</strong> Offer competitive pricing for your available space.</li>
+                        <li><strong>Maximize Earnings:</strong> Turn empty space into profit and optimize your trips.</li>
+                        <li><strong>Build Reputation:</strong> Gain positive reviews and attract more clients.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title">Our Service Tiers</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">PigeeBack offers different tiers to cater to a wide range of service providers, ensuring flexibility and trust.</p>
+            <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card text-center">
+                    <div class="text-4xl mb-4">🧍</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Informal</h3>
+                    <p class="text-gray-600">Perfect for casual individuals. Transport small parcels along your existing routes. No formal company registration needed.</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-4xl mb-4">🚚</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Semi-Formal</h3>
+                    <p class="text-gray-600">Ideal for small businesses or individuals operating as a registered company. Enhanced credibility.</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-4xl mb-4">🌍</div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Formal</h3>
+                    <p class="text-gray-600">For established courier companies. Requires company registration and necessary accreditations for various load types. Offers highest trust and access to premium features.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-indigo-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-6">Ready to Join the PigeeBack Revolution?</h2>
+            <p class="text-lg text-indigo-100 mb-8 max-w-2xl mx-auto">Whether you're looking to send a package স্মার্টলি, or earn by utilizing your travel, PigeeBack is the platform for you.</p>
+            <div>
+                <a href="#" class="bg-white hover:bg-gray-100 text-indigo-700 font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 mr-4">Sign Up as a Client</a>
+                <a href="#" class="border-2 border-white hover:bg-white hover:text-indigo-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">Sign Up as a Provider</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="text-center text-lg text-gray-600 mb-10 max-w-xl mx-auto">Have questions, suggestions, or interested in learning more? We'd love to hear from you!</p>
+            <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <p class="text-center text-gray-700">
+                    For inquiries, please reach out to us via:
+                </p>
+                <p class="text-center font-semibold text-indigo-600 mt-4">
+                    Email: <a href="mailto:pigeemine@gmail.com" class="hover:underline">pigeemine@gmail.com</a>
+                </p>
+                <p class="text-center text-gray-700 mt-6">
+                    Follow us on social media:
+                </p>
+                <div class="flex justify-center space-x-4 mt-2">
+                    <a href="#" class="text-gray-500 hover:text-indigo-600">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                        <span class="sr-only">Facebook</span>
+                    </a>
+                    <a href="https://twitter.com/PigeeMine" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-indigo-600">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                        <span class="sr-only">Twitter</span>
+                    </a>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-6">
+                <p class="font-semibold text-lg">PigeeBack</p>
+                <p class="text-sm">Revolutionizing Courier Services</p>
+            </div>
+            <div class="text-center text-sm mb-4">
+                <p class="font-semibold">Disclaimer:</p>
+                <p class="max-w-3xl mx-auto">PigeeBack is a platform provider and not a courier company. Transactions are directly between clients and service providers. We are not liable for losses. Please exercise caution and ensure safety during transactions. Be aware of all legal and customs implications for international shipments.</p>
+            </div>
+            <div class="text-center text-xs">
+                <p>&copy; <span id="currentYear"></span> PigeeBack. All Rights Reserved.</p>
+                <p>Designed as a Proof of Concept.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIconOpen = menuButton.querySelector('svg:first-child');
+        const menuIconClose = menuButton.querySelector('svg:last-child');
+
+        menuButton.addEventListener('click', () => {
+            const expanded = menuButton.getAttribute('aria-expanded') === 'true' || false;
+            menuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            menuIconOpen.classList.toggle('hidden');
+            menuIconOpen.classList.toggle('block');
+            menuIconClose.classList.toggle('hidden');
+            menuIconClose.classList.toggle('block');
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+                // Close mobile menu after click
+                if (!mobileMenu.classList.contains('hidden')) {
+                    menuButton.click();
+                }
+                // Active link styling
+                document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+
+                // For mobile menu items
+                if (this.closest('#mobile-menu')) {
+                     document.querySelector(`nav .hidden.md\\:block a[href="${targetId}"]`).classList.add('active');
+                } else if (this.closest('.hidden.md\\:block')) {
+                     const mobileLink = document.querySelector(`#mobile-menu a[href="${targetId}"]`);
+                     if (mobileLink) mobileLink.classList.add('active'); // This might not be visible, but good for consistency
+                }
+            });
+        });
+
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Intersection Observer for active nav link highlighting on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu a');
+
+        const observerOptions = {
+            root: null, // relative to document viewport
+            rootMargin: '0px',
+            threshold: 0.4 // 40% of section visible
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                     mobileNavLinks.forEach(link => {
+                        link.classList.remove('active'); // Assuming 'active' for mobile is different or handled by main nav logic
+                        if (link.getAttribute('href') === `#${id}`) {
+                            // Potentially add a mobile-specific active class if needed
+                        }
+                    });
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        sections.forEach(section => observer.observe(section));
+
+    </script>
+
+</body>
+</html>
